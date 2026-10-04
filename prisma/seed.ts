@@ -3,7 +3,7 @@ import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient();
 
 const STATIONS = [
-  { nama: "Gerbang Utama", lokasi: "Depan gerbang utama kampus", latitude: -6.8915, longitude: 107.6101, kapasitas: 6 },
+  { nama: "Gerbang Utama", lokasi: "Depan gerbang utama kampus", latitude: -6.8915, longitude: 107.6101, kapasitas: 8 },
   { nama: "Perpustakaan", lokasi: "Samping gedung perpustakaan pusat", latitude: -6.8928, longitude: 107.6115, kapasitas: 5 },
   { nama: "Fakultas Teknik", lokasi: "Parkiran fakultas teknik", latitude: -6.8941, longitude: 107.6092, kapasitas: 4 },
   // Stasiun ini dibuat PENUH (kapasitas 1, terisi 1) untuk menguji 409 saat pengembalian.
