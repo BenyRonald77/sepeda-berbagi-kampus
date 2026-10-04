@@ -1,0 +1,61 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Station {
+  id        Int      @id @default(autoincrement())
+  nama      String
+  lokasi    String
+  latitude  Float
+  longitude Float
+  kapasitas Int
+  bikes     Bike[]
+  rentalsAwal  Rental[] @relation("RentalAwal")
+  rentalsAkhir Rental[] @relation("RentalAkhir")
+}
+
+model Bike {
+  id        Int      @id @default(autoincrement())
+  kode      String   @unique
+  qrToken   String   @unique
+  status    String   @default("TERSEDIA") // TERSEDIA | DIPINJAM
+  stationId Int?
+  station   Station? @relation(fields: [stationId], references: [id], onDelete: SetNull)
+  rentals   Rental[]
+}
+
+model User {
+  id      Int      @id @default(autoincrement())
+  nama    String
+  saldo   Int      @default(0)
+  rentals Rental[]
+}
+
+model Rental {
+  id             Int       @id @default(autoincrement())
+  userId         Int
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  bikeId         Int
+  bike           Bike      @relation(fields: [bikeId], references: [id], onDelete: Cascade)
+  stationAwalId  Int
+  stationAwal    Station   @relation("RentalAwal", fields: [stationAwalId], references: [id])
+  stationAkhirId Int?
+  stationAkhir   Station?  @relation("RentalAkhir", fields: [stationAkhirId], references: [id])
+  mulaiAt        String    // ISO timestamp
+  selesaiAt      String?   // ISO timestamp
+  durasiMenit    Int?
+  tarifPerMenit  Int
+  depositHold    Int
+  biaya          Int?
+  status         String    @default("AKTIF") // AKTIF | SELESAI
+}
+
+model Setting {
+  key   String @id
+  value String
+}
